@@ -12,7 +12,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:ui": "rm -rf build && cd ../palautusrepositorio/osa2/puhelinluettelo/ && npm run build && cp -r build ../../../puhelinluettelo2",
     "deploy": "git push heroku master",
-    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",    
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
     "logs:prod": "heroku logs --tail"
   },
   "repository": {
@@ -27,7 +27,9 @@
   "homepage": "https://github.com/arttukauppinen/puhelinluettelo2#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.0.2",
     "express": "^4.18.1",
+    "mongoose": "^6.6.1",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
