@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const process= 0
 if (process.argv.length<3) {
   console.log('give password as argument')
   process.exit(1)
@@ -21,22 +21,23 @@ const personSchema = new mongoose.Schema({
 
 const Person = mongoose.model('Person', personSchema)
 
+// eslint-disable-next-line no-empty-pattern
 const person = {} = new Person({
   name: name,
   number: number,
 })
 
 if (!name && !number) {
-    Person.find({}).then(result => {
-        result.forEach(people => {
-            console.log(people)
-        })
-        mongoose.connection.close()
+  Person.find({}).then(result => {
+    result.forEach(people => {
+      console.log(people)
     })
+    mongoose.connection.close()
+  })
 
 } else if (name && number) {
-    person.save().then(result => {
-        console.log(`added ${name} number ${number} to phonebook`)
-        mongoose.connection.close()
-    })
+  person.save().then(() => {
+    console.log(`added ${name} number ${number} to phonebook`)
+    mongoose.connection.close()
+  })
 }

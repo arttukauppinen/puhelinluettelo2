@@ -3,7 +3,6 @@ const express = require('express')
 const morgan = require('morgan')
 const app = express()
 const cors = require('cors')
-const mongoose = require('mongoose')
 const Person = require('./models/person')
 
 app.use(express.static('build'))
@@ -12,31 +11,31 @@ app.use(express.json())
 app.use(morgan('tiny'))
 
 let persons = [
-      {
-        "name": "Arto Hellas",
-        "number": "040-123456",
-        "id": 1
-      },
-      {
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523",
-        "id": 2
-      },
-      {
-        "name": "Dan Abramov",
-        "number": "12-43-234345",
-        "id": 3
-      },
-      {
-        "name": "Mary Poppendieck",
-        "number": "39-23-6423122",
-        "id": 4
-      },
-      {
-        "name": "khaled",
-        "number": "sfaafsf",
-        "id": 6
-      }
+  {
+    'name': 'Arto Hellas',
+    'number': '040-123456',
+    'id': 1
+  },
+  {
+    'name': 'Ada Lovelace',
+    'number': '39-44-5323523',
+    'id': 2
+  },
+  {
+    'name': 'Dan Abramov',
+    'number': '12-43-234345',
+    'id': 3
+  },
+  {
+    'name': 'Mary Poppendieck',
+    'number': '39-23-6423122',
+    'id': 4
+  },
+  {
+    'name': 'khaled',
+    'number': 'sfaafsf',
+    'id': 6
+  }
 ]
 
 app.get('/info', (request, response) => {
@@ -48,7 +47,7 @@ app.get('/info', (request, response) => {
                 `)
   })
 })
-  
+
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(people => {
     response.json(people)
@@ -57,7 +56,7 @@ app.get('/api/persons', (request, response) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -74,32 +73,32 @@ app.get('/api/persons/:id', (request, response, next) => {
     })
     .catch(error => next(error))
 })
-  
+
 
 app.post('/api/persons', (request, response, next) => {
-    const body = request.body
-    console.log(body)
+  const body = request.body
+  console.log(body)
 
-    if (!body.name || !body.number) {
-        return response.status(400).json({ 
-          error: 'name or number missing' 
-        })
-    }
-
-    if (persons.some(person => person.name == body.name)) {
-        return response.status(400).json({ 
-          error: 'name must be unique' 
-        })
-    }
-    
-    const person = new Person ({
-      name: body.name,
-      number: body.number,
+  if (!body.name || !body.number) {
+    return response.status(400).json({
+      error: 'name or number missing'
     })
+  }
 
-    person.save().then(result => {
-      response.json(result)
+  if (persons.some(person => person.name === body.name)) {
+    return response.status(400).json({
+      error: 'name must be unique'
     })
+  }
+
+  const person = new Person ({
+    name: body.name,
+    number: body.number,
+  })
+
+  person.save().then(result => {
+    response.json(result)
+  })
     .catch(error => next(error))
 })
 
@@ -113,7 +112,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
   Person.findByIdAndUpdate(
     request.params.id,
-    person, 
+    person,
     { new: true, runValidators: true, context: 'query' }
   )
     .then(updatedPerson => {
@@ -140,7 +139,7 @@ const errorHandler = (error, request, response, next) => {
 }
 
 app.use(errorHandler)
-  
+
 
 const PORT = process.env.PORT
 app.listen(PORT)
